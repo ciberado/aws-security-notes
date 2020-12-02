@@ -61,3 +61,13 @@
 * IAM can stablish a *trust* relationship with *Identity providers* by using the *Single Sign-on* service
 * *Active Directory* and *Azure Active Directory* are both very popular products used as *Identity providers* and it strightforward to federate them with IAM
 * By using the provided URL, an user can assume a role in an account based on the information stored in the *IdP*
+
+## Authorization algorithm
+
+![Policy evaluation order](https://docs.aws.amazon.com/IAM/latest/UserGuide/images/PolicyEvaluationHorizontal.png)
+
+* For more information on the authorization algorithm read [the official documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html)
+
+## Additional resources
+
+* [Role management from the command line](https://aws.amazon.com/es/premiumsupport/knowledge-center/iam-assume-role-cli/)
