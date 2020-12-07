@@ -1,5 +1,7 @@
 # Virtual Private Networks
 
+![Simple vpc with two subnets](02-subnets.png)
+
 ## VCP
 
 * VPC are networks than spans for one single region
@@ -34,6 +36,12 @@
 * Application Load Balancer is the flavour designed to be used by most web applications
 * ALB can be deployed in the public subnets of the VPC, from where they can reach the resources existing in the private subnets
 
+## Instances and Relational databases
+
+* In the end, what is actually placed inside a VPC is the network adapter
+* Security groups play a critical role security this kind of resources
+* They should almost always be placed in the private subnets of the network
+
 ## Security Groups
 
 * They are **stateful** firewalls
@@ -41,4 +49,5 @@
 * With security groups, it is possible to **allow** traffic to them (but not to deny)
 * SG can be **chained**, making them extremely configuration-friendly
 * Traffic segregation in VPC is achieved by levaring this chaining feature
-* 
+
+![More complex vpc diagram](03-subnets.png)
