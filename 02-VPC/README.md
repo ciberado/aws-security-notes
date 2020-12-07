@@ -35,6 +35,7 @@
 * Elastic Load Balancers are a managed service (patched and mantained by AWS) providing load balancing capabilities
 * Application Load Balancer is the flavour designed to be used by most web applications
 * ALB can be deployed in the public subnets of the VPC, from where they can reach the resources existing in the private subnets
+* Remember: ALB public IPs **are not static** and will change with time. Use Network Load Balancer if you are in the need of fixed IPs
 
 ## Instances and Relational databases
 
