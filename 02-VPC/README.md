@@ -64,6 +64,8 @@
 
 ## Virtual Private Networks (VPN)
 
+![VPN site-to-site diagram](vpn.png)
+
 * VPN are a safe mechanism for connecting two points using the public internet by enforcing cryptography in the connection gateway (routers)
 * The most common case in AWS is a site-to-site connection, involving two stable endpoints (usually AWS and the on-premises datacenter of the customer)
 * A Virtual Private Gateway (VPG) provides the IPsec tunnels from AWS. The customer register the on-premises routers as Customer Gateways
