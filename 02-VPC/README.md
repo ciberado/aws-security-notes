@@ -46,9 +46,25 @@
 ## Security Groups
 
 * They are **stateful** firewalls
+* 
 * All ports in an instance are blocked by default
 * With security groups, it is possible to **allow** traffic to them (but not to deny)
 * SG can be **chained**, making them extremely configuration-friendly
 * Traffic segregation in VPC is achieved by levaring this chaining feature
 
 ![More complex vpc diagram](03-subnets.png)
+
+## Bastion servers
+
+![Bastion diagram](bastion.png)
+
+* Private subnets are only reachable from inside the VPC
+* A classic way to provide access to administrable machines is to create [Bastion Hosts](https://en.wikipedia.org/wiki/Bastion_host)
+* A more secure and flexible alternative includes the use of [System Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html), based on an agent installed inside the virtual machines and the use of the [Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html) service for acting as a bridge between the external resource and the private one
+
+## Virtual Private Networks (VPN)
+
+* VPN are a safe mechanism for connecting two points using the public internet by enforcing cryptography in the connection gateway (routers)
+* The most common case in AWS is a site-to-site connection, involving two stable endpoints (usually AWS and the on-premises datacenter of the customer)
+* A Virtual Private Gateway (VPG) provides the IPsec tunnels from AWS. The customer register the on-premises routers as Customer Gateways
+* Every subnet that should reach/be reached from the on-premises site must have an entry in its route table pointing to the VPG
