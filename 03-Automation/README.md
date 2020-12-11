@@ -24,6 +24,8 @@
 
 ## Infrastructure as code
 
+![Graphs diagram](graphs.png)
+
 * This approach involves representing the **desired** infrastructure of the datacenter as a graph data-structure
 * It is easy to update the program that generates that graph and, by doing it, create a new version of the *desired state*
 * By running a `diff` operation between both versions of the graph it is possible to generate a list of *change sets* with the elements that have changed
