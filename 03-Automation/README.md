@@ -1,17 +1,4 @@
- # AWS automation services
-
- ## Systems Manager
-
-![SSM diagram](ssm.png)
-
- * Provides a way of orchestrating updates and executing commands on a fleet of servers
- * Works thanks to an agent (a program) deployed on each machine of the fleet
- * The agent can be installed on-premises
- * Communications are initiated from the agent (inside the virtual machine) to the Systems Manager servers, so it can push trough the security group configuration
- * It is possible to use a NAT gw to reach the Systems Manager servers from the instances, but it is also possible to deploy an endpoint of the service inside the VPC if there is no Internet Gateway or NAT gateway
-* The [Systems Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) can be levaraged to administrate machines even if port 22 is closed or the `ssh` daemon is not running, provided the user has the correct IAM permissions
-
-![Session Manager](ssm-session-manager.png)
+# AWS automation services
 
 ## API invocation
 
