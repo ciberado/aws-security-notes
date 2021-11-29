@@ -8,6 +8,8 @@
 * An Availability Zone is a set of groups of datacenters placed between 10 and 20 km away each other connected with low-latency networking
 * A Point of Presence is a small AWS DC usually colocated in third-party infrastructure providing support for a few hyper distributed services: the CDN (Cloudfront), the DNS (Route 53), etc
 
+![Global infrastructure schema](02-global-infra.png)
+
 ## Automation
 
 * Public cloud providers always offers an API-based interface to the infrastructure and services
@@ -17,3 +19,4 @@
 * Because of that, it is possible to create and operate data centers by writing programs
 * Software scales much better than people and this is the core super power of the public cloud
 
+![Cloud top players](03-players.png)
