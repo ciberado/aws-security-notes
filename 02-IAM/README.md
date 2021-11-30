@@ -2,7 +2,7 @@
 
 ![Governance diagram](governance.png)
 
-## Share responsability model
+## Shared responsability model
 
 * AWS provides a secure physical environment
 * The customer needs to correctly configure the services and custody credentials
