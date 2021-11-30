@@ -1,6 +1,6 @@
 # Security and permissions: IAM
 
-![governance.png]
+![Governance diagram](governance.png)
 
 ## Share responsability model
 
