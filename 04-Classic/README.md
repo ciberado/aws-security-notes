@@ -1,17 +1,17 @@
 # Classic Architectures
 
-![Networking with NAT gw and ALB](networking-public-design.png)
-
 ## Networking: exposed surface
+
+![Networking with NAT gw and ALB](networking-public-design.png)
 
 * A [NAT gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) is a **egress proxy** that will allow resources placed in the private subnets of the VPC to communicate with the internet
 * To achieve it, the private route table should include a `0.0.0.0/0 -> NAT-gw` rule to properly direct the traffic to it
 * It is a totally **managed service**, increasing the security of the solution
 * In combination with a managed load balancer (see later), it can provide a 100% managed exposed surface to our architecture
 
-![Machine fleets architecture](machine-fleets.jpg)
-
 ## Load Balancers
+
+![Machine fleets architecture](machine-fleets.jpg)
 
 * Elastic Load Balancers are a managed service (patched and managed by AWS) providing load balancing capabilities
 * Application Load Balancer is the flavour designed to be used by most web applications
