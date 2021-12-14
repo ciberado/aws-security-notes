@@ -9,5 +9,6 @@
 * [Governance](02-IAM)
 * [Basic networking](03-Networking)
 * [Classic architectures](04-Classic)
+* [Automation](05-Automation)
 * Kubernetes
 * Edge computing (IoT)
