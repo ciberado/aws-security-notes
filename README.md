@@ -12,4 +12,8 @@
 * [Automation](05-Automation)
 * [Security related services](06-SecurityServices) (extra ball)
 * Kubernetes
-* Edge computing (IoT)
+* ~Edge computing (IoT)~
+
+## Extra ball (Catalan/Spanish)
+
+Judit ha sido tan amable como para compartir sus apuntes con nosotros. Kudos totales para ella, porque además están súper bien: utilizadlos para repasar.
