@@ -16,4 +16,4 @@
 
 ## Extra ball (Catalan/Spanish)
 
-Judit ha sido tan amable como para compartir sus apuntes con nosotros. Kudos totales para ella, porque además están súper bien: utilizadlos para repasar.
+Judit ha sido tan amable como para compartir [sus apuntes](A0-ApuntsJudit) con nosotros. Kudos totales para ella, porque además están súper bien: utilizadlos para repasar.
