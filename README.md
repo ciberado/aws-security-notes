@@ -10,7 +10,7 @@
 * [Basic networking](03-Networking)
 * [Classic architectures](04-Classic)
 * [Automation](05-Automation)
-* [Security related services](06-SecurityServices) (extra ball)
+* [Security related services](06-SecurityServices)
 * Kubernetes
 * ~Edge computing (IoT)~
 
