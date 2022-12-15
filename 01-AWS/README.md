@@ -4,7 +4,7 @@
 
 ## Infrastructure
 
-* A Region is a deployment of AWS technology in a location. It is composed of several Availability Zones, each one with many thosands of computer resources
+* A Region is a deployment of AWS technology in a location. It is composed of several Availability Zones, each one with many thousands of computer resources
 * An Availability Zone is a set of groups of datacenters placed between 10 and 20 km away each other connected with low-latency networking
 * A Point of Presence is a small AWS DC usually colocated in third-party infrastructure providing support for a few hyper distributed services: the CDN (Cloudfront), the DNS (Route 53), etc
 
