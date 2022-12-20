@@ -10,6 +10,22 @@
 
 ![Global infrastructure schema](02-global-infra.png)
 
+### Scope of main services
+
+| Service  |  Scope   |
+|---|---|
+| VPC  | Region  |
+| IGW  | Region/VPC  |
+| Subnet  | VPC/AZ  |
+| Route table  | VPC |
+| NATgw  | Subnet/AZ  |
+| EC2 instance  | Subnet/AZ  |
+| EBS (disks)  | AZ |
+| ALB  | Region/VPC  |
+| Security group  | VPC |
+| ACL  | Subnet  |
+| IAM  | Global |
+
 ## Automation
 
 * Public cloud providers always offers an API-based interface to the infrastructure and services
