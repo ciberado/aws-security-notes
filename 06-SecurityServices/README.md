@@ -33,7 +33,7 @@ It can be activated for any network card (or a whole subnet) and will record the
 
 This service will apply Machine Learning models to find suspicious activity on your system. The analysis will be performed on several logs (CloudTrail, DNS logs, VPC Flow Logs) so it is important to understand that it will not affect the actual resources.
 
-[![How do I identify SSH Brute force attacks](https://img.youtube.com/vi/nRs-Z41zTos/0.jpg)](https://www.youtube.com/watch?v=nRs-Z41zTos)
+[![Getting Hands on with Amazon GuardDuty](https://i.ytimg.com/vi/eq3_H-aiHhk/maxresdefault.jpg)](https://www.youtube.com/watch?v=eq3_H-aiHhk)
 
 
 ## Detective
