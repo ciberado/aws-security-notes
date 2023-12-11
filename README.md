@@ -2,8 +2,6 @@
 
 ## The plan
 
-![A picture with the plan](01-plan.png)
-
 * [Mindset](00-Mindset)
 * [Global infrastructure](01-AWS)
 * [Governance](02-IAM)
@@ -11,8 +9,6 @@
 * [Classic architectures](04-Classic)
 * [Automation](05-Automation)
 * [Security related services](06-SecurityServices)
-* Kubernetes
-* ~Edge computing (IoT)~
 
 ## Extra ball (Catalan/Spanish)
 
