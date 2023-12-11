@@ -2,7 +2,6 @@
 
 ## The plan
 
-* [Mindset](00-Mindset)
 * [Global infrastructure](01-AWS)
 * [Governance](02-IAM)
 * [Basic networking](03-Networking)
