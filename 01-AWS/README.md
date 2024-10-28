@@ -35,4 +35,4 @@
 * Because of that, it is possible to create and operate data centers by writing programs
 * Software scales much better than people and this is the core super power of the public cloud
 
-![Cloud top players](03-players.png)
+
