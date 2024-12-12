@@ -119,7 +119,7 @@ A single-tenant, hardware-based alternative to KMS. Useful for compliance in fin
 
 Stores sensitive information and allows automatic password rotation for RDS. Surprisingly expensive.
 
-[![Secrets Manager](https://img.youtube.com/vi/9nOyaM3kZk/0.jpg)](https://www.youtube.com/watch?v=9nOyaM3kZk)
+[![Secrets Manager](https://img.youtube.com/vi/-9nOyaM3kZk/0.jpg)](https://www.youtube.com/watch?v=-9nOyaM3kZk)
 
 ## Systems Manager Parameter Store
 
