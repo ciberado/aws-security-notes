@@ -2,6 +2,45 @@
 
 Every hyperscaler will provide you with a set of services that are useful for keeping your systems secure. Here you will find a short description and a related video for the most important ones offered by AWS (excluding the most network-related ones):
 
+## CloudWatch
+
+The observability service plays a basic role in security enforcement, as it allows to detect extrange application behaviors.
+
+For example, a big augment in the number of instances managed by an Autoscaling Group may be an indication of a DDoS attach being in course. Or a spike in the number of 404 responses sent by an ALB may be the result of a malicious URL check.
+
+[![CloudWatch](https://img.youtube.com/vi/a4dhoTQCyRA/0.jpg)](https://www.youtube.com/watch?v=a4dhoTQCyRA)
+
+## Budgets
+
+It is possible to set budgets based on tags or the general consumption of the account. They may help identifiying security problems, for example if a malicious actor is using the account for mininig cryptocurrencies.
+
+[![Budgets](https://img.youtube.com/vi/Ris23gKc7s0/0.jpg)](https://www.youtube.com/watch?v=Ris23gKc7s0)
+
+## Web Application Firewall
+
+This service works as a proxy that will protect the web applications from the typical OWasp attacks. It can be deployed both at CloudFront level, ALB or API gw.
+
+[![WAF](https://img.youtube.com/vi/nUI7G9UzyN8/0.jpg)](https://www.youtube.com/watch?v=nUI7G9UzyN8)
+
+## Firewall Manager 
+
+A single pane of glass for understanding the configuration of the WAF and Security Groups settings among all regions and accounts.
+
+[![Firewall Manager](https://img.youtube.com/vi/FGhKpPDBvXc/0.jpg)](https://www.youtube.com/watch?v=FGhKpPDBvXc)
+
+## Network Firewall
+
+This is the traffic washing machine of AWS. It will intercept connections and run filters on the content for insuring that it follows the configured [Suricata](https://suricata.io) policies. It is a simple and managed IDS/IPS product.
+
+[![Network Firewall](https://img.youtube.com/vi/BYVObzBWnqo/0.jpg)](https://www.youtube.com/watch?v=BYVObzBWnqo)
+
+## Shield Advanced
+
+AWS response team will help your company to detect and respond to DDoS attacks, and there will be a reimbursement of the resources used for counter-attacking it... if the application conditions are met. 
+
+[![Shield Advanced](https://img.youtube.com/vi/jE70B-qkgrc/0.jpg)](https://www.youtube.com/watch?v=jE70B-qkgrc)
+
+
 ## CloudTrail
 
 This is a fundamental one, as it acts like the Audit service for every single API call run against an account. Also, other types of events are recorded (like failed login attempts or logins performed by a root account).
@@ -40,7 +79,7 @@ This service will apply Machine Learning models to find suspicious activity on y
 
 This service will help you to investigate security threads, by correlating different logs. For example, once an attack has been detected from a particular IP to an EC2 instance, it will show the origin of the attack with the VPC Flow log related to that virtual machine.
 
-[![Detective demo](https://img.youtube.com/vi/fmm4PXhg8BY/0.jpg)](https://www.youtube.com/watch?v=fmm4PXhg8BY)
+[![Detective demo](https://img.youtube.com/vi/fmm4PXhg8BY/0.jpg)](https://www.youtube.com/watch?v=OCz91Ee2COg)
 
 ## Inspector
 
@@ -63,3 +102,27 @@ This service works as a [SIEM](https://en.wikipedia.org/wiki/Security_informatio
 One important point regarding this service is that it will easily provide an organizational-wide view of the system, including multiple accounts on the same panel.
 
 [![Security Hub and Organizations](https://img.youtube.com/vi/wXkuRiNOo4o/0.jpg)](https://www.youtube.com/watch?v=wXkuRiNOo4o)
+
+## Key Management Service
+
+Manages encryption keys, both symmetric and asymmetric. It provides the underlaying encryption support for many other services, like S3, EBS, SQS, etc. It will also encrypt short messages, but that function is not intended to be used for encrypting large amounts of data.
+
+[![KMS](https://img.youtube.com/vi/8Z0wsE2HoSo/0.jpg)](https://www.youtube.com/watch?v=8Z0wsE2HoSo)
+
+## Cloud HSM (Hardware Security Module)
+
+A single-tenant, hardware-based alternative to KMS. Useful for compliance in finance, mostly.
+
+[![HSM](https://img.youtube.com/vi/BLnuUtjJNLE/0.jpg)](https://www.youtube.com/watch?v=BLnuUtjJNLE)
+
+## Secrets Manager
+
+Stores sensitive information and allows automatic password rotation for RDS. Surprisingly expensive.
+
+[![Secrets Manager](https://img.youtube.com/vi/9nOyaM3kZk/0.jpg)](https://www.youtube.com/watch?v=9nOyaM3kZk)
+
+## Systems Manager Parameter Store
+
+A free (and more powerful, in some ways) alternative to Secrets Manager. Key rotation must be implemented appart using Lambdas.
+
+[![Parameter Store](https://img.youtube.com/vi/OMtcieZMQPA/0.jpg)](https://www.youtube.com/watch?v=OMtcieZMQPA)
