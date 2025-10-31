@@ -94,10 +94,10 @@ Las **Edge Locations** son puntos de presencia (PoPs) distribuidos globalmente q
 
 ```mermaid
 flowchart TD
-    US_Carpintero[Carpintero en Texas solicita imagen/martillo]
+    US_Carpintero[Carpintero en Texas solicita imagen-martillo]
     EdgeCache[CloudFront verifica caché en Dallas]
-    Cached[Cacheada → entrega inmediata (<10ms)]
-    NotCached[No cacheada → obtiene del origen (Fráncfort)]
+    Cached[Cacheada → entrega inmediata 10ms]
+    NotCached[No cacheada → obtiene del origen Fráncfort]
     CacheStore[Cachea en Dallas]
     LocalUsers[Próximos usuarios en Dallas obtienen desde caché]
 
