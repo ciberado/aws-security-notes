@@ -147,7 +147,9 @@ Entonces necesitas **6 bits para hosts**.
 IPv4 tiene 32 bits. Si 6 son para hosts, los otros **26 son para la red (prefijo)**.  
 Esto se llama **máscara de subred**. Recuerda que en este caso, 32 bits en total - 26 bits para red = 6 bits para hosts.
 
-TODO añade el prefijo real en lugar de la máscara de subred. **********************
+************* TODO añade el prefijo real en lugar de la máscara de subred. **********************
+Intégralo con https://cidr.xyz/
+*************************************************************************************************
 
 - Binario: `11111111.11111111.11111111.11000000`  
 - Decimal: `255.255.255.192`  
