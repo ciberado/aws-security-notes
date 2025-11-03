@@ -191,7 +191,7 @@ En redes IPv4 funciona igual: se elige un prefijo de los 32 bits para identifica
 
 ## Ejercicio
 
-## 📝Calcular el rango de red para 100 dispositivos
+### 📝Calcular el rango de red para 100 dispositivos
 
 **Situación:**
 Una pequeña empresa necesita conectar **100 ordenadores** a su red local. Tu tarea es determinar qué rango de direcciones IP privadas necesitan.
