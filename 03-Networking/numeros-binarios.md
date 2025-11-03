@@ -139,12 +139,6 @@ En redes IPv4 funciona igual: se elige un prefijo de los 32 bits para identifica
 
 ---
 
-### ¿Cómo calcular cuántos bits necesitas para los dispositivos?
-- Si quieres **N dispositivos**, necesitas suficientes bits para representarlos.
-- Con 8 bits puedes representar 256 valores (de 0 a 255), por ejemplo. Sería suficiente para 100 dispositivos, pero no para 300.
-- Otro ejemplo: con 6 bits puedes representar 64 valores (de 0 a 63), suficiente para 50 dispositivos, pero no para 70.
-
----
 ### La analogía de los teléfonos
 
 - En telefonía, cada país tiene su propia red.
@@ -156,6 +150,14 @@ En redes IPv4 funciona igual: se elige un prefijo de los 32 bits para identifica
 - De la misma manera, en redes IP, cada red tiene un rango de direcciones IP que puede asignar a sus dispositivos.
 - El prefijo de la red ayuda a identificar a qué red pertenece cada dispositivo.
 - Si dos redes diferentes se interconectan, no habrá conflictos de direcciones IP siempre que hayamos tenido la previsión de hacer que  sus prefijos sean distintos.
+
+---
+
+### ¿Cómo calcular cuántos bits necesitas para los dispositivos?
+- Si quieres **N dispositivos**, necesitas suficientes bits para representarlos.
+- Con 8 bits puedes representar 256 valores (de 0 a 255), por ejemplo. Sería suficiente para 100 dispositivos, pero no para 300.
+- Otro ejemplo: con 6 bits puedes representar 64 valores (de 0 a 63), suficiente para 50 dispositivos, pero no para 70.
+
 
 ---
 
@@ -185,5 +187,38 @@ En redes IPv4 funciona igual: se elige un prefijo de los 32 bits para identifica
 - Si quisiésemos crear otras tres redes para otros 50 dispositivos cada una, podríamos usar los siguientes prefijos, puedes conseguir sus direcciones pulsando en los últimos bits del prefijo de red (los que están en amaraillo). Verás que la calculadora actualiza el rango automáticamente: `192.168.0.64/26`, `192.168.0.128/26` y `192.168.0.192/26`.
 - Como estas redes no se solapan entre ellas (no hay direcciones IP repetidas), podríamos interconectarlas sin problemas en el futuro si lo deseamos.
 
+---
+
+## Ejercicio
+
+## 📝Calcular el rango de red para 100 dispositivos
+
+**Situación:**
+Una pequeña empresa necesita conectar **100 ordenadores** a su red local. Tu tarea es determinar qué rango de direcciones IP privadas necesitan.
+
+**Dato inicial:**
+La dirección de red que te han asignado es: **192.168.1.0**
+
+---
+
+### Preguntas paso a paso:
+
+**Paso 1:** ¿Cuántas direcciones IP necesitas en total?
+
+**Paso 2:** ¿Cuál es la potencia de 2 más cercana que cubre esas direcciones?
+- Pista: 2^6 = 64, 2^7 = 128, 2^8 = 256, 2^9 = 512
+
+**Paso 3:** Con ese número de direcciones, ¿cuántos bits necesitas para los hosts (dispositivos)?
+
+**Paso 4:** Escribe la supuesta IP de uno de esos dispositivos en binario (por ejemplo, `192.168.1.30`)
+- Recuerda: una dirección IP tiene 32 bits en total
+- Los primeros bits son para la red y los últimos son para los hosts
+
+**Paso 5:** ¿Cuál es el rango completo de IPs disponibles para asignar a los ordenadores de la red?
+- Primera IP: 192.168.1.___
+- Última IP: 192.168.1.___
+
+**Paso 6:** Escribe el rango de red en formato CIDR
+- Formato: 192.168.1.0/___
 
 
