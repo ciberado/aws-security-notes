@@ -1,33 +1,66 @@
 # Números binarios y redes
 
-## 0. ¿Qué es una dirección IP?
+## Direcciones IP individuales
 
-- Internet Protocol es el conjunto de reglas que rigen cómo se envían los datos a través de Internet.
-- En este protocolo, cada dispositivo conectado a una red tiene una **dirección IP** única.
-- Una dirección IP es una serie de números que identifica a un dispositivo en una red.
+###  ¿Qué es una dirección IP?
+
+- Internet Protocol (IP) es el conjunto de reglas que rigen cómo se envían los datos a través de Internet.
+- En este protocolo, cada dispositivo conectado a una red tiene una **dirección IP** única, un número que lo identifica.
+- Dos redes independientes pueden tener dispositivos con la misma dirección IP, pero dentro de una misma red, cada dispositivo debe tener una dirección única.
 - El número va desde 0 hasta 4.294.967.295 (cuatro mil doscientos noventa y cuatro millones novecientos sesenta y siete mil doscientos noventa y cinco).
 - Para entender el por qué de este rango debes aprender cómo funcionan los números binarios y su relación con los 32 bits.
 
-## 1. ¿Qué son los números binarios?
+###  ¿Qué son los números binarios?
 Los números binarios son una forma de representar valores usando solo **dos dígitos: 0 y 1**.  
 - Cada dígito se llama **bit** (de *binary digit*).  
 - En lugar de base 10 (decimal), el sistema binario es **base 2**.
 
 Por ejemplo:  
-- Decimal **5** → Binario **101** (porque \(5 = 1\times2^2 + 0\times2^1 + 1\times2^0\)).
+- Decimal **5** → Binario **101**:
+
+Vamos a ver por qué. Imagina que tienes tres casillas, y en cada una solo puedes poner un **1** o un **0**:
+
+```
+1    0    1
+```
+
+Ahora, cada casilla tiene un "valor" diferente dependiendo de su posición:
+
+- La casilla de más a la **derecha** vale **1**
+- La del **medio** vale **2** 
+- La de más a la **izquierda** vale **4**
+
+Entonces, para saber qué número es, solo tienes que:
+
+1. **Mirar cada casilla**
+2. **Si tiene un 1**, sumas su valor
+3. **Si tiene un 0**, no sumas nada
+
+Veamos el **101**:
+
+```
+Posición:    1    0    1
+Valor:       4    2    1
+```
+
+- Primera casilla (izquierda): tiene un **1** → sumamos **4**
+- Segunda casilla (medio): tiene un **0** → no sumamos nada
+- Tercera casilla (derecha): tiene un **1** → sumamos **1**
+
+**Total: 4 + 1 = 5** ✓
 
 ---
 
-## 2. ¿Por qué 32 bits?
+###  ¿Por qué 32 bits?
 En redes y sistemas, se usan números de **32 bits** porque permiten representar muchos valores:  
 - Cada bit puede ser 0 o 1.  
-- Con 32 bits hay \(2^{32}\) combinaciones → **4.294.967.296 valores posibles**.
+- Con 32 bits hay 2^32 combinaciones (dos multiplado por dos 32 veces) → **4.294.967.296 valores posibles**.
 
 Esto se usa, por ejemplo, en direcciones IPv4.
 
 ---
 
-## 3. ¿Cómo se ve un número de 32 bits?
+###  ¿Cómo se ve un número de 32 bits?
 Un número de 32 bits es una secuencia de 32 ceros y unos.  
 Ejemplo:  
 ```
@@ -39,25 +72,21 @@ Ejemplo:
 
 ---
 
-## 4. ¿Cómo se relaciona con redes?
-En IPv4, una dirección como `192.168.0.1` se convierte en binario:  
-- 192 → `11000000`  
-- 168 → `10101000`  
-- 0 → `00000000`  
-- 1 → `00000001`  
+###  ¿Cómo se relaciona con redes?
 
-Juntas forman 32 bits:  
-```
-11000000 10101000 00000000 00000001
-```
+Digamos que queremos asignar la dirección IP `3232235521` a un dispositivo. Este número es casi imposible de recordar, así que lo
+representamos en binario: `11000000 10101000 00000000 00000001`. Ahora tenemos el problema de que resulta muy incómodo leer y recordar números tan largos en binario, así que dividimos los 32 bits en cuatro bloques de 8 bits (octetos) y convertimos cada bloque a decimal.
 
----
+- `11000000` → 192
+- `10101000` → 168
+- `00000000` → 0
+- `00000001` → 1
 
-Perfecto, vamos paso a paso:
+Así, la dirección IP `3232235521` en formato decimal punteado es `192.168.0.1`.
 
----
+###  **Cómo convertir un número decimal a binario (32 bits)**
 
-## 5. **Cómo convertir un número decimal a binario (32 bits)**
+Utilizando una calculadora. Pero si de verdad quieres hacerlo a mano:
 
 1. **Divide entre 2** el número decimal y anota el resto (0 o 1).
 2. **Repite** la división con el cociente hasta llegar a 0.
@@ -77,24 +106,7 @@ Leyendo al revés: **1010** → con 32 bits:
 
 ---
 
-## 6. **Cómo convertir una dirección IP a binario**
-Cada bloque (octeto) de la IP se convierte por separado:
-- IP: `192.168.0.1`
-- 192 → `11000000`
-- 168 → `10101000`
-- 0 → `00000000`
-- 1 → `00000001`
-
-Resultado:
-```
-11000000 10101000 00000000 00000001
-```
-
-Aunque no te engañes, normalmente usamos calculadoras ;)
-
----
-
-## 7. **Tabla práctica: Decimal ↔ Binario (32 bits)**
+###  **Tabla práctica: Decimal ↔ Binario (32 bits)**
 
 | Decimal | Binario (32 bits)                              |
 |---------|-----------------------------------------------|
@@ -107,12 +119,17 @@ Aunque no te engañes, normalmente usamos calculadoras ;)
 ---
 
 
-### 8. ¿Qué es un rango de red?
+## Rangos de red
+
+###  ¿Qué es un rango de red?
+
 Un rango de red define **el número inicial y final que puede asignarse a un dispositivo para identificarlo dentro de una red**.  
+Como consecuencia, también limita el número total de dispositivos que pueden conectarse a esa red, ya que cada uno de ellos
+requerirá una dirección IP única dentro del rango definido. Ahora te cuento más detalles.
 
 ---
 
-### 9. ¿Por qué importa el número de dispositivos?
+###  ¿Por qué importa el número de dispositivos?
 Cada dispositivo necesita una **dirección IP única**. En IPv4, esas direcciones se representan con **32 bits**.  
 Pero no siempre usamos los 32 bits para los dispositivos: parte se reserva para identificar la **red** y el resto para los **hosts** (dispositivos).
 
@@ -122,56 +139,51 @@ En redes IPv4 funciona igual: se elige un prefijo de los 32 bits para identifica
 
 ---
 
-### 10. ¿Cómo calcular cuántos bits necesitas para los dispositivos?
+### ¿Cómo calcular cuántos bits necesitas para los dispositivos?
 - Si quieres **N dispositivos**, necesitas suficientes bits para representarlos.
-- Fórmula:  
-  \[
-  2^h - 2 \geq N
-  \]
-  donde **h** = número de bits para hosts (quitamos 2 porque una dirección es para la red y otra para broadcast).
+- Con 8 bits puedes representar 256 valores (de 0 a 255), por ejemplo. Sería suficiente para 100 dispositivos, pero no para 300.
+- Otro ejemplo: con 6 bits puedes representar 64 valores (de 0 a 63), suficiente para 50 dispositivos, pero no para 70.
 
-Ejemplo:  
-- Si quieres **50 dispositivos**:  
-  \[
-  2^h - 2 \geq 50
-  \]
-  Probamos:  
-  - \(h = 5\) → \(2^5 - 2 = 30\) (no alcanza)  
-  - \(h = 6\) → \(2^6 - 2 = 62\) (¡sí alcanza!)  
+---
+### La analogía de los teléfonos
 
-Entonces necesitas **6 bits para hosts**.
+- En telefonía, cada país tiene su propia red.
+- Puedes tener un teléfono en España con el número `680 80 80 80` y otro en México con el número `680 80 80 80`. Ambos números son iguales, pero pertenecen a redes diferentes (España y México), pero no pueden existir dos teléfonos con el mismo número dentro de España.
+- La red española también un número que la identifica, el prefijo `+34`, y la red mexicana el prefijo `+52`.
+- De esta manera, estos dispositivos se identifican globalmente como `+34 680 80 80 80` y `+52 680 80 80 80`, anteponiendo el prefijo de su red.
+- Es interesante que los números en la red española van desde el `000 00 00 00` hasta el `999 99 99 99`, lo que permite tener hasta 100 millones de teléfonos diferentes en España (en realidad, no, pero esto es solo una analogía).
+- Esos números marcan el rango de la red española.
+- De la misma manera, en redes IP, cada red tiene un rango de direcciones IP que puede asignar a sus dispositivos.
+- El prefijo de la red ayuda a identificar a qué red pertenece cada dispositivo.
+- Si dos redes diferentes se interconectan, no habrá conflictos de direcciones IP siempre que hayamos tenido la previsión de hacer que  sus prefijos sean distintos.
 
 ---
 
-### 11. ¿Cómo se ve en binario y decimal?
-IPv4 tiene 32 bits. Si 6 son para hosts, los otros **26 son para la red (prefijo)**.  
-Esto se llama **máscara de subred**. Recuerda que en este caso, 32 bits en total - 26 bits para red = 6 bits para hosts.
+### ¿Cómo funcionan los prefijos de red en IP?
+- IPv4 tiene 32 bits. Si deseamos por ejemplo reservar 6 bits son para hosts (dispositivos) porque tenemos previsto desplegar 50 dispositivos, los otros **26 son para la red (prefijo)**.
+- En cierto sentido, los 26 primeros bits son "fijos" y sirven para dar un número de red. Sería equivalente al prefijo de los números de teléfono: todos los teléfonos de España empiezan por 34, y todos los teléfonos de México por 52.
+- El prefijo de red termina siendo el número que representa esa red. España en telefonía es el 34, y una supuesta red que contenga un máximo de 64 dispositivos (6 bits) tendría un prefijo de 26 bits como este: `11000000.10101000.00000000.00xxxxxx` (que si recuerdas, corresponde a `192.168.0.0`). 
+- Dado que los primeros 26 bits son fijos, solo los últimos 6 pueden variar para asignar a los dispositivos.
+- Esto te indica que el primer número asignable a un dispositivo sería `000000` (0 en decimal) y el último `111111` (63 en decimal).
+- La IP completa del primero número sería `11000000.10101000.00000000.00000000` (0 en decimal) y la del último `11000000.10101000.00000000.00111111` (63 en decimal) si ponemos la dirección de red que hemos elegido seguida de la dirección del host (dispositivo).
 
-************* TODO añade el prefijo real en lugar de la máscara de subred. **********************
-Intégralo con https://cidr.xyz/
-*************************************************************************************************
+### CIDR Notation
 
-- Binario: `11111111.11111111.11111111.11000000`  
-- Decimal: `255.255.255.192`  
+- Representar un rango de red como `192.168.0.0-192.168.0.63` es pesadísimo y poco práctico.
+- Por eso se usa la notación CIDR (Classless Inter-Domain Routing).
+- En esta notación, se escribe la dirección de red seguida de una barra inclinada y el número de bits que se usan para la red.
+- En nuestro ejemplo, la red sería `192.168.0.0/26`, porque usamos 26 bits para la red y 6 bits para los dispositivos.
+- Esto indica que los primeros 26 bits son fijos (para la red) y los últimos 6 bits pueden variar (para los dispositivos).
+- No hay magia, solo una forma más cómoda de representar el rango de direcciones IP.
 
-Esto significa que teóricamente el primer host (dispositivo) podría tener el número `000000` (0 en decimal) y el último `111111` (63 en decimal). Para serte sincero, esas direcciones no se usan para asignar a dispositivos, pero estamos simplificando ;)
+### Calculadora de rangos IP
 
-Si añadimos cuatro dispositivos y le damos una IP a cada uno, podrían quedar así:
+- Las personas que pasan el día en redes pueden calcular estos rangos a mano (e incluso mentalmente), pero para el resto de mortales existen calculadoras online que hacen el trabajo sucio.
+- Mi recomendación es usar [https://cidr.xyz/](https://cidr.xyz/).
+- Visita [este enlace concreto](https://cidr.xyz/#192.168.0.0/26) y verás el rango de direcciones IP que hemos estado usando como ejemplo (`192.168.0.0/26`).
+- La calculadora te muestra el rango completo, el número de hosts disponibles, la máscara de subred, la dirección de broadcast, etc. Pero no te preocupes demasiado por esos términos ahora mismo.
+- Si quisiésemos crear otras tres redes para otros 50 dispositivos cada una, podríamos usar los siguientes prefijos, puedes conseguir sus direcciones pulsando en los últimos bits del prefijo de red (los que están en amaraillo). Verás que la calculadora actualiza el rango automáticamente: `192.168.0.64/26`, `192.168.0.128/26` y `192.168.0.192/26`.
+- Como estas redes no se solapan entre ellas (no hay direcciones IP repetidas), podríamos interconectarlas sin problemas en el futuro si lo deseamos.
 
-- **Host 1** → `192.168.1.1`
-- **Host 2** → `192.168.1.2`
-- **Host 3** → `192.168.1.3`
-- **Host 4** → `192.168.1.4`
-
-En binario (solo los últimos 6 bits cambian, los 26 restantes para llegar a 32 hemos dicho que los fijábamos a `11111111.11111111.11111111.11`):
-
-```
-000001 → 192.168.1.1
-000010 → 192.168.1.2
-000011 → 192.168.1.3
-000100 → 192.168.1.4
-```
-
-Las direcciones no tienen que ser consecutivas, simplemente tienen que estar dentro del rango que hemos definido: `192.168.1.0` a `192.168.1.63`. Igual que los números de teléfono en España empiezan por 34, pero el resto del número puede variar.
 
 
