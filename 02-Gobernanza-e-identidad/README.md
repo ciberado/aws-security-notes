@@ -38,7 +38,7 @@ Características:
 
 **AWS Organizations** es el servicio que permite crear y gestionar jerarquías de cuentas de forma centralizada, sin necesidad de repetir el proceso manual de creación para cada una.
 
-### 4.1. Management Account (anteriormente Root Account)
+### 4.1. Management Account
 
 La **management account** es la primera cuenta que se crea y establece la relación inicial entre una empresa y AWS. Desde ella se activa Organizations y se puede:
 - Crear nuevas cuentas sin introducir tarjeta de crédito
