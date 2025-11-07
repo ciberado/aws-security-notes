@@ -1,5 +1,47 @@
 # Conceptos de Gobernanza e Identidad en AWS
 
+## El Problema: Del Caos al Control
+
+Imagina que empiezas con una aplicación sencilla en la nube. Un par de servidores, una base de datos, quizás un balanceador. Todo controlado, todo claro. Seis meses después tienes cincuenta aplicaciones corriendo, veinte desarrolladores experimentando, tres entornos por aplicación (desarrollo, preproducción, producción), y de repente nadie sabe muy bien quién puede tocar qué, cuánto está costando cada cosa, ni dónde diablos están los recursos de aquel proyecto que empezó Marketing el trimestre pasado.
+
+Bienvenidos al caos.
+
+Y el caos no es solo molesto. El caos cuesta dinero. Literalmente. Hay historias reales de empresas que han pasado de gastar $5 al día a $310,000 en un fin de semana porque alguien subió credenciales a un repositorio público en GitHub y un bot las encontró. En cuestión de horas, miles de máquinas estaban minando criptomonedas a tu costa. El microinfarto no te lo quita nadie, aunque AWS perdone la deuda (que normalmente lo hace si es la primera vez y abres un ticket explicando la situación).
+
+Pero el problema no es solo el dinero. Es que cuando llegas al lunes y tienes 500 cuentas de AWS distribuidas por diferentes departamentos, regiones y proyectos, y alguien te pregunta "¿quién tiene acceso a la base de datos de producción de la aplicación de e-commerce?", no puedes tardar tres días en averiguarlo. Necesitas saberlo ya. Y necesitas poder cambiar ese acceso de forma segura, auditable y sin romper nada.
+
+## Por Qué la Gobernanza es Crítica
+
+La gobernanza no es burocracia. Es supervivencia.
+
+Cuando hablamos de gobernanza en cloud, hablamos de tres pilares que mantienen tu infraestructura funcional, segura y económicamente viable:
+
+**Organización**: Cómo agrupas las cosas para que tengan sentido. Para que cuando alguien nuevo llegue al equipo no tarde dos semanas en entender dónde está cada pieza. Para que puedas decir "esto es del departamento de ventas, esto de fabricación" y que esa estructura se refleje claramente en cómo está montado tu cloud.
+
+**Costes**: Porque si no sabes cuánto gastas, estás volando a ciegas. Y no hablamos solo de saber el total a final de mes. Hablamos de poder decir "esta aplicación cuesta €5,000 mensuales" y poder hacer chargeback al departamento que la usa. Hablamos de detectar cuándo algo va raro antes de que la factura se dispare. Las empresas serias revisan métricas de coste con la misma frecuencia que revisan el uso de CPU.
+
+**Seguridad**: Y aquí entra la identidad, que es donde vamos a centrar la mayor parte de esta explicación. Porque puedes tener la infraestructura más robusta del mundo, pero si cualquiera puede entrar y borrar la base de datos de producción, no tienes nada. La gestión de identidades (quién es quién), autenticación (cómo demuestran que son quienes dicen ser) y autorización (qué pueden hacer una vez dentro) es posiblemente el aspecto más crítico de la seguridad en cloud.
+
+## La Entropía Solo Crece
+
+Hay una ley física que dice que el desorden de un sistema solo puede aumentar. En cloud esto es especialmente cierto. Cada semana alguien necesita un entorno nuevo, cada mes se despliega otra aplicación, cada trimestre se reorganiza un departamento. Si no tienes mecanismos claros desde el principio, al cabo de un año no hay quien maneje aquello.
+
+La buena noticia es que estos mecanismos existen. AWS (y el resto de proveedores cloud) proporcionan herramientas específicamente diseñadas para gestionar este crecimiento orgánico. No son perfectas—ya veréis que AWS tiene algunas decisiones de diseño bastante cuestionables—pero funcionan.
+
+La mala noticia es que son complejas. Especialmente en AWS, donde el sistema ha crecido de forma orgánica durante casi dos décadas, añadiendo capas sobre capas de forma retrocompatible. Esto significa que a veces vas a encontrar tres formas de hacer lo mismo, terminología confusa (preparaos para que "cuenta" no signifique lo que pensáis que significa), y decisiones que solo tienen sentido si conoces la historia de por qué se hicieron así.
+
+## Lo Que Vamos a Aprender
+
+En las siguientes secciones vamos a construir, paso a paso, el conocimiento necesario para gestionar identidades y organización en AWS de forma profesional. Empezaremos por los conceptos más básicos (qué es una cuenta, qué es un usuario) y construiremos los conceptos más sofisticados encima de ellos.
+
+Al final, entenderéis cómo una empresa real con miles de empleados y cientos de aplicaciones mantiene todo bajo control. Cómo asegurarse de que los desarrolladores pueden experimentar sin miedo a romper producción. Cómo los auditores pueden revisar costes sin poder tocar la infraestructura. Cómo, cuando alguien deja la empresa, podéis revocar todos sus accesos en cinco minutos.
+
+Y lo más importante: entenderéis por qué cada pieza está ahí. Porque en seguridad y gobernanza, implementar algo sin entender el porqué es la forma más rápida de crear agujeros de seguridad que ni siquiera sabías que existían.
+
+Vamos allá.
+
+---
+
 ## 1. Gobernanza
 
 La gobernanza en cloud consiste en establecer reglas y mecanismos para controlar el caos natural que tiende a generarse. Se compone de tres pilares fundamentales:
