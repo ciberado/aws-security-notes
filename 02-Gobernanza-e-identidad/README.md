@@ -491,3 +491,358 @@ La decisión de implementar Breaking Glass depende de tu risk tolerance. Netflix
 | Auditoría | CloudTrail (excelente) | Activity Log |
 
 **Conclusión**: AWS es más complejo porque creció durante 20 años. Pero una vez lo entiendes, ofrece un control granular imposible de conseguir en otros sitios. Azure es más directo, pero menos flexible.
+
+---
+
+# Políticas de Recursos: Autenticación y Autorización a Nivel de Recurso
+
+## El Problema: ¿Quién Puede Acceder a Qué?
+
+Hasta ahora hemos hablado de autenticación y autorización como algo que sucede a nivel de usuario/rol:
+- Alice Wonderland asume el rol "Administrator"
+- El rol tiene una política que dice "puede crear servidores"
+- Por lo tanto, Alice puede crear servidores
+
+Esto funciona perfectamente cuando controlamos quién accede al sistema. Pero ¿qué pasa con escenarios como este:
+
+**Escenario 1: Tu página web pública**
+Necesitas que 8 mil millones de personas en Internet descarguen una foto de tu producto. Pero no quieres crearles credenciales de AWS a todas. De hecho, ni siquiera quieres que sepan que usan AWS.
+
+**Escenario 2: Un servicio compartido**
+Tu equipo de auditoría necesita leer logs de costes sin poder crear ni modificar nada. Pero esos logs están mezclados con datos sensibles que otros equipos guardan en el mismo bucket.
+
+**Escenario 3: Integración entre servicios**
+Tu aplicación web (corriendo en un servidor EC2) necesita leer imágenes de un bucket S3. La aplicación tiene credenciales, pero no quieres darle permiso para borrar datos ni acceder a otros buckets.
+
+En todos estos casos, necesitas un mecanismo distinto. No puedes asignar permisos en el usuario/rol porque:
+- El usuario no existe (internet)
+- Quieres permisos ultra-específicos
+- Necesitas un punto de control en el recurso mismo
+
+**Solución: Políticas de Recursos (Resource Policies)**
+
+## Dos Tipos de Autenticación
+
+Hasta ahora vimos que la autenticación ocurría en **dos capas**:
+
+1. **Capa de Identidad**: ¿Eres realmente quién dices ser? (Identity Center → Entra ID)
+2. **Capa de Autorización**: ¿Qué puedes hacer? (IAM roles con políticas)
+
+Ambas están "en el usuario". El usuario dice "soy Alice", demuestra que es Alice, y luego comprobamos qué puede hacer Alice.
+
+Pero los recursos en AWS pueden tener **su propia capa de autorización**:
+
+3. **Capa de Recurso**: ¿Permite este recurso específico lo que intentas hacer?
+
+Esto es crucial porque permite algo imposible de otra forma: **otorgar permisos sin conocer la identidad del solicitante**.
+
+## La Demo: Punto de Partida
+
+Recapitulemos lo que hicimos:
+
+1. **Creamos buckets** en la cuenta Sandbox
+2. **Subimos archivos** (HTML, imágenes) usando nuestro rol
+3. **Necesitábamos hacerlo público** para que cualquiera lo viera
+
+En el paso 3, pasó algo especial. Veamos qué.
+
+## Autenticación vs. Autorización en S3
+
+### ¿Quién accede a S3 en nuestro caso?
+
+La gente en Internet. No tienen credenciales de AWS. No están en Entra ID. No tienen un rol asignado.
+
+Para ellos, el flujo tradicional de autenticación es irrelevante:
+
+```
+Internet User → S3 → "¿Quién eres?" 
+Internet User → "No sé, soy anónimo"
+S3 → "Vale, voy a comprobar mi política de bucket"
+S3 Lee su política → "Permite a cualquiera (principal: *) descargar objetos (GetObject)"
+S3 → "Adelante, toma el archivo"
+```
+
+Nota algo importante: **S3 ni siquiera pidió credenciales**.
+
+### El Principal
+
+En las políticas de AWS, `Principal` es quien va a realizar la acción:
+
+```json
+{
+  "Principal": "*",
+  "Action": "s3:GetObject",
+  "Effect": "Allow",
+  "Resource": "arn:aws:s3:::mi-bucket/*"
+}
+```
+
+`Principal: "*"` significa "cualquiera, autenticado o no". `Principal: "*"` es el que permite acceso anónimo.
+
+## De la Teoría a la Práctica: La Demo
+
+Aquí es donde entendemos realmente qué pasó en clase.
+
+### Paso 1: Todos los Estudiantes Asumen Roles
+
+Cada uno de vosotros entrasteis con vuestra identidad corporativa. Entrásteis en la **misma cuenta** (Sandbox) con el **mismo Permission Set** (StaticWeb).
+
+Resultado: Todos asumisteis el rol `AWSReservedSSO_StaticWeb_xxxxx` en la misma cuenta.
+
+### Paso 2: Vosotros Creáis Buckets
+
+Con ese rol, teníais permiso para crear buckets S3 (incluido en el Permission Set).
+
+```
+Vosotros (con rol StaticWeb) → CreateBucket en S3
+IAM → Comprueba si el rol StaticWeb permite CreateBucket
+IAM → Sí, la política incluye s3:* (todo en S3)
+S3 → Crea el bucket
+```
+
+Cada uno creasteis un bucket: `elena-web`, `marco-web`, etc.
+
+**Aquí viene lo interesante**: Si intentabas listar los buckets, ¿qué veías?
+
+### Paso 3: El Descubrimiento
+
+Esperabas ver solo tu bucket. En cambio, veías **todos los buckets de toda la clase**.
+
+¿Por qué? Porque todos los buckets están en **la misma cuenta** (imagínatela de nuevo como un edicificio con una sola puerta) y todos habéis creado buckets dentro de esa cuenta. Por ello, cuando revisas qué buckets existen, el sistema responde con todos los que hay en la cuenta (todos los que se han creado en el mismo edificio).
+
+```
+Tú → ListBuckets
+IAM → Tu rol permite s3:*
+IAM → Sí, puede listar
+S3 → Devuelve todos los buckets de la cuenta
+```
+
+S3 no distingue entre "mi" bucket y "tu" bucket a nivel de IAM. Solo ve "buckets en la cuenta".
+
+### Paso 4: Aquí Entra la Magia - Política de Bucket
+
+Queríamos usar S3 para publicar nuestra web, así que necesitabais hacer vuestros buckets públicos. Si lo recuerdas, modificaste **el bucket mismo** con una **Bucket Policy**.
+
+Fuisteis a: Bucket → Permissions → Bucket Policy → Edit
+
+Y pegasteis una política JSON que esencialmente decía algo similar a esto:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::mi-bucket/*"
+    }
+  ]
+}
+```
+
+Traducción literal: "Permite a CUALQUIERA descargar cualquier objeto de este bucket".
+
+### Paso 5: ¿Qué Sucede Cuando Alguien Accede?
+
+Ahora, cuando una persona en Internet intenta descargar tu página:
+
+```
+Internet User → GET /index.html desde mi-bucket.s3.amazonaws.com
+S3 recibe la solicitud → "¿Quién eres?"
+Usuario → "No sé, soy anónimo"
+S3 → "OK, voy a comprobar si permito a anónimos descargar"
+S3 Lee la política del bucket → "Principal: *, Action: GetObject - SÍ"
+S3 → Devuelve index.html
+```
+
+**Punto clave**: S3 **ni siquiera pregunta por credenciales** porque la política permite a al *principal* `*` (cualquiera, incluyendo *anónimos*) acceder a S3.
+
+## El Modelo de Control de Acceso
+
+AWS usa lo que se llama el **evaluation logic**:
+
+```
+¿Hay una política explícita en el usuario/rol que PERMITA? ✓
+└─ Sí → ¿Hay una política explícita que NIEGUE? ✗
+   └─ Sí → DENEGADO
+   └─ No → PERMITIDO
+   
+¿No hay política de permiso en el usuario?
+└─ Comprueba la política del recurso
+   └─ ¿Permite el recurso? ✓
+   └─ Sí, y no hay DENEGACIÓN explícita → PERMITIDO
+   └─ No → DENEGADO
+   
+Ni usuario ni recurso permiten → DENEGADO (por defecto)
+```
+
+**En nuestro caso**:
+
+```
+Internet User → Intenta descargar de mi-bucket
+IAM → "¿Quién eres?"
+Usuario → "Anónimo"
+IAM → "No tienes rol, no tienes políticas de usuario"
+IAM → DENEGADO por defecto
+S3 → Espera, ahora reviso MI política de bucket
+S3 → "Principal: * permite GetObject"
+S3 → PERMITIDO
+```
+
+Sin la política de bucket, el resultado sería DENEGADO en la segunda línea.
+
+Con la política de bucket, se revisa esa y se permite.
+
+## Más Allá de lo Público: Políticas Sofisticadas
+
+Las políticas no tienen que ser solo "público o privado". Pueden ser muy específicas:
+
+### Ejemplo 1: Solo lectura desde una IP específica
+
+```json
+{
+  "Principal": "*",
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::logs-bucket/*",
+  "Condition": {
+    "IpAddress": {
+      "aws:SourceIp": "203.0.113.0/24"
+    }
+  }
+}
+```
+
+Traducción: "Cualquiera puede descargar, pero solo si viene desde la red 203.0.113.0/24".
+
+### Ejemplo 2: Solo si accedes mediante HTTPS
+
+```json
+{
+  "Principal": "*",
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::secure-bucket/*",
+  "Condition": {
+    "Bool": {
+      "aws:SecureTransport": "true"
+    }
+  }
+}
+```
+
+Traducción: "Descarga permitida, pero solo si usas HTTPS".
+
+### Ejemplo 3: Denegar a propósito (el peor enemigo es uno mismo)
+
+```json
+{
+  "Effect": "Deny",
+  "Principal": "*",
+  "Action": "s3:DeleteObject",
+  "Resource": "arn:aws:s3:::critical-backups/*"
+}
+```
+
+Traducción: "Nadie, ni siquiera con credenciales administrativas, puede borrar nada en este bucket". Útil para backups críticos.
+
+## El Contexto de la Demo: Capas de Identidad
+
+Recapitulemos lo que aprendemos con la demo:
+
+### Capa 1: Identity Center (tu identidad corporativa)
+- Eres Alicia, Bruno, Carla, etc.
+- Te autentificas con Entra ID
+- Ves el portal de AWS
+
+### Capa 2: IAM Role (tu identidad en esta cuenta)
+- Asumes el rol `AWSReservedSSO_StaticWeb_xxxxx`
+- Tienes permisos: crear buckets, subir objetos, crear políticas
+- Puedes hacer estas cosas porque tu rol lo permite
+
+### Capa 3: Bucket Policy (controles del recurso)
+- El bucket dice: "Principal: * puede descargar"
+- Internet User (sin credenciales) → Comprueba la política → Permitido
+
+**La importancia**: Sin la política de bucket, Internet User sería denegado en la capa 2 (no tiene rol IAM).
+
+Con la política de bucket, se salta la capa 2 y va directo: "¿Dice la política del bucket que puedo? Sí → Adelante".
+
+## Comparación: Usuario IAM vs. Política de Recurso
+
+| Aspecto | Política de Usuario/Rol | Política de Recurso |
+|---|---|---|
+| Se define en | IAM → Roles | El recurso (Bucket, Topic, etc.) |
+| Se aplica a | Un rol o usuario específico | Cualquier Principal |
+| Cuándo se revisa | Siempre (es la primera línea) | Si la política de usuario lo permitió, O si no hay usuario |
+| Ejemplo de uso | "Los desarrolladores pueden crear servidores" | "Este bucket es público" |
+| Seguridad | Fácil de monitorear centralmente | Riesgo si lo olvidas |
+
+## Resumen: Autenticación Multinivel
+
+En AWS, la autenticación y autorización no son un solo check:
+
+1. **¿Quién eres?** (Identity Center / Entra ID)
+2. **¿Tienes un rol en esta cuenta?** (IAM)
+3. **¿Tu rol lo permite?** (Políticas de rol)
+4. **¿El recurso lo permite?** (Políticas de recurso)
+
+Todas estas capas pueden decir "no" en cualquier momento. Solo si **todas dicen sí** (o no aplican) se permite la acción.
+
+## Implicaciones para la Seguridad
+
+### Responsabilidad
+
+Cada capa es responsabilidad de distintas personas:
+
+- **Capas 1-2**: Administrador de identidades (se integra Identity Center con Entra ID)
+- **Capas 3**: Arquitecto de seguridad (definen roles y permisos)
+- **Capa 4**: Dueño del recurso (configura política del bucket)
+
+Si cualquiera de ellas falla, tienes un problema.
+
+### Auditoría
+
+CloudTrail es el servicio de auditoría de AWS que (si lo activas, ya que tiene coste) registra todo lo que sucede en tu organización. Con CloudTrail, ves:
+
+```
+User: Elena
+AssumedRole: AWSReservedSSO_StaticWeb_xxxxx
+Action: PutBucketPolicy
+Resource: arn:aws:s3:::elena-web
+Result: Success
+```
+
+Esta entrada explica que Elena, usando su rol, cambió la política del bucket `elena-web`.
+
+### La Sorpresa
+
+Muchas intrusiones suceden cuando alguien:
+1. Roba credenciales
+2. Asume un rol con acceso amplio
+3. Luego se aprovecha de políticas de recurso permisivas
+
+Ejemplo: Un atacante roba credenciales de un dev, asume su rol (que tiene acceso a S3), y ve que un bucket tiene una política que permite descargar a cualquiera. Aunque el atacante no estuviera "autorizado" por el bucket policy, el rol del dev SÍ lo está, entonces puede descargar.
+
+
+## Buenas Prácticas para Políticas de Recurso
+
+1. **Siempre especifica el Principal**: Nunca uses `*` a menos que sea realmente público
+2. **Sé específico con Actions**: No uses `s3:*`, usa solo lo que necesitas (`s3:GetObject`)
+3. **Sé específico con Resources**: No uses `arn:aws:s3:::*`, usa el bucket exacto
+4. **Revisa regularmente**: CloudTrail te dirá quién cambió la política
+5. **Usa Conditions**: Restringe por IP, HTTPS, hora del día, etc. si es posible
+6. **Denegar siempre que sea crítico**: Para backups o datos muy sensibles, usa `Deny` explícitamente
+7. **Documenta el por qué**: Cada política debería tener un `Sid` claro
+
+## La Moraleja
+
+La demo de crear un sitio web estático en S3 NO era realmente sobre S3. Era sobre entender que **la autorización en AWS ocurre en múltiples capas**, y que el concepto de "política de recurso" es fundamentalmente distinto de "política de rol".
+
+Una vez entiendas esto, entiendes por qué:
+- Puedes hacer cosas públicas sin dar acceso a usuarios reales
+- Puedes compartir un recurso entre cuentas
+- Puedes tener "emergencias" donde ciertas acciones se permitensiempre
+- Puedes auditar exactamente qué sucedió y cuándo
+
+Es la base de cómo AWS construye confianza en sistemas complejos con cientos de personas, máquinas, y cuentas.
