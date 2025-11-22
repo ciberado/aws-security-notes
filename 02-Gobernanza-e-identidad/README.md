@@ -178,7 +178,7 @@ Identity Center incluye un directorio simple para pruebas, pero **no debe usarse
 Un **permission set** es un documento que define qué acciones están autorizadas. Es equivalente a un rol en Azure, pero AWS usa terminología distinta.
 
 Componentes:
-- **Policies**: Lista específica de permisos (ej: `Billing` para ver costes)
+- **Policies**: Lista específica de permisos (ej: `Billing` para ver costes), es decir, de autorizaciones
 - **Scope**: Cuentas sobre las que aplican estos permisos
 
 Ejemplo: Permission set "Auditoría" que permite ver costes pero no crear recursos.
