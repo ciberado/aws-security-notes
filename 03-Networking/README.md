@@ -1,5 +1,11 @@
 # Guía Completa de Virtual Private Clouds (VPCs) en AWS
 
+## Diagrama de Arquitectura de Referencia
+
+![Diagrama de Arquitectura de Referencia](vpc.drawio.png)
+
+Este diagrama ilustra una arquitectura completa de VPC con alta disponibilidad, showing todos los componentes principales discutidos en esta guía: subnets públicas y privadas distribuidas en múltiples AZs, NAT Gateways para conectividad saliente, un Application Load Balancer para distribución de tráfico, instancias de aplicación, una base de datos RDS con standby, VPC Endpoints para optimización de costes, y conectividad híbrida a través de Virtual Private Gateway.
+
 ## Introducción: El Suelo de Nuestras Aplicaciones
 
 Imagina por un momento que estás construyendo una ciudad. Antes de levantar edificios, centros comerciales o casas, necesitas un terreno, un suelo sólido donde asentar toda la infraestructura. En el mundo de AWS, este suelo fundamental son las Virtual Private Clouds (VPCs). Sin una VPC bien diseñada, no puedes desplegar aplicaciones de forma segura y eficiente en la nube.
@@ -263,11 +269,4 @@ Recuerda que las redes sirven para aislar, no solo para conectar. Este principio
 
 Con una base sólida en VPCs, estarás preparado para construir aplicaciones escalables, seguras y resilientes en la nube de AWS. El tiempo invertido en entender y diseñar correctamente tus redes se multiplicará en beneficios a lo largo de toda la vida de tus aplicaciones.
 
----
 
-## Diagrama de Arquitectura de Referencia
-
-![Diagrama de Arquitectura de Referencia](vpc.drawio.png)
-
-
-Este diagrama ilustra una arquitectura completa de VPC con alta disponibilidad, showing todos los componentes principales discutidos en esta guía: subnets públicas y privadas distribuidas en múltiples AZs, NAT Gateways para conectividad saliente, un Application Load Balancer para distribución de tráfico, instancias de aplicación, una base de datos RDS con standby, VPC Endpoints para optimización de costes, y conectividad híbrida a través de Virtual Private Gateway.
